@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    ports:
+    - "50051:50051"
+    volumes:
+      - .:/go/src/
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+
+  db:
+    image: postgres:9.4
+    restart: always
+    tty: true
+    volumes:
+      - .pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=codepix
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    tty: true
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@user.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    ports:
+      - "9000:80"
+    depends_on:
+      - db
