@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bankfrontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bankfrontend
+  template:
+    metadata:
+      labels:
+        app: bankfrontend
+    spec:
+      containers:
+        - name: bankfrontend
+          image: wesleywillians/imersao-bankfrontend:latest
+          command: ["/bin/sh","-c"]
+          args: ["npm run build && npm run start;"]
+          ports:
+            - containerPort: 3000
+
+          volumeMounts:
+            - name: bankfrontend-volume
+              mountPath: /app/.env
+              subPath: .env  
+
+      volumes:
+        - name: bankfrontend-volume
+          configMap:
+            name: bankfrontend-conf
+            items:
+              - key: env
+                path: .env
+          
+        
