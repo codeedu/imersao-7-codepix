@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package github.com.codeedu.codepix;
 
-option go_package = "protofiles;pb";
+option go_package = "protofiles/pb";
 
 message PixKeyRegistration {
     string kind = 1;
